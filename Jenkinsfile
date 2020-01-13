@@ -6,11 +6,6 @@ pipeline {
   }
 
   stages {
-    stage('Analysis') {
-      steps {
-        sh "mvn --batch-mode -V -U -e checkstyle:checkstyle pmd:pmd pmd:cpd spotbugs:spotbugs"
-      }
-    }
     stage('Build') {
       steps {
         git 'https://github.com/ajlanghorn/dvja.git'
@@ -25,7 +20,12 @@ pipeline {
     stage('Check dependencies') {
       steps {
         dependencyCheck additionalArguments: '', odcInstallation: 'Dependency-Check'
-        dependencyCheckPublisher failedTotalCritical: 1, failedTotalHigh: 1, failedTotalLow: 10, failedTotalMedium: 5, pattern: '', unstableTotalCritical: 1, unstableTotalHigh: 1, unstableTotalLow: 10, unstableTotalMedium: 5
+        dependencyCheckPublisher ''
+      }
+    }
+    stage('Analysis') {
+      steps {
+        sh "mvn --batch-mode -V -U -e checkstyle:checkstyle pmd:pmd pmd:cpd spotbugs:spotbugs"
       }
     }
     stage('Publish to S3') {
