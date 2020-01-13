@@ -47,11 +47,6 @@ pipeline {
       recordIssues enabledForFailure: true, tool: spotBugs()
       recordIssues enabledForFailure: true, tool: cpd(pattern: '**/target/cpd.xml')
       recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
-    }
-  }
-
-  post {
-    always {
       archiveArtifacts artifacts: 'zap-report.html', fingerprint: true
     }
   }
